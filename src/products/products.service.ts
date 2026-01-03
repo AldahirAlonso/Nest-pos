@@ -22,6 +22,11 @@ export class ProductsService {
       throw new NotFoundException(errors)
     }
     
+    return this.productRepository.save({
+      ...createProductDto,
+      category
+    })
+
   }
 
   findAll() {

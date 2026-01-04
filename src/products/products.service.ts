@@ -29,8 +29,14 @@ export class ProductsService {
 
   }
 
-  async findAll() {
-    const [ data, total ] = await this.productRepository.findAndCount({
+  async findAll(categoryId: number | null) {
+    if(categoryId) {
+      const [ products, total ] = await this.productRepository.findAndCount({
+        where: {
+          category: {
+            id: categoryId
+          }
+        },
       relations: {
         category: true
       },
@@ -40,7 +46,22 @@ export class ProductsService {
     })
 
     return {
-      data,
+      products,
+      total
+    }
+  }
+    
+    const [ products, total ] = await this.productRepository.findAndCount({
+      relations: {
+        category: true
+      },
+      order: {
+        id: 'DESC'
+      }
+    })
+
+    return {
+      products,
       total
     }
   }
